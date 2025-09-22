@@ -13,20 +13,10 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Custom scrollbar for a cleaner look */
-        #chat-window::-webkit-scrollbar {
-            width: 6px;
-        }
-        #chat-window::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        #chat-window::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 3px;
-        }
-        #chat-window::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+        #chat-window::-webkit-scrollbar { width: 6px; }
+        #chat-window::-webkit-scrollbar-track { background: #f1f1f1; }
+        #chat-window::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
+        #chat-window::-webkit-scrollbar-thumb:hover { background: #555; }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
@@ -34,11 +24,9 @@
     <div class="flex flex-col h-screen max-w-2xl mx-auto">
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg flex flex-col h-[95vh] my-auto">
             
-            <!-- Header -->
             <div class="bg-blue-600 text-white p-4 rounded-t-lg shadow-md flex items-center">
                 <div class="w-12 h-12 mr-3 flex-shrink-0">
                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <!-- High-fidelity gear with 10 teeth -->
                         <g fill="#2E4262">
                             <path d="M50 12 a 38 38 0 0 1 0 76 a 38 38 0 0 1 0 -76 M 50 18 a 32 32 0 0 0 0 64 a 32 32 0 0 0 0 -64" />
                             <g>
@@ -54,11 +42,8 @@
                                 <use href="#tooth" transform="rotate(324, 50, 50)"/>
                             </g>
                         </g>
-                        <!-- Main water drop -->
                         <path d="M50 26 C 70 50, 75 58, 75 70 C 75 83.8, 63.8 95, 50 95 C 36.2 95, 25 83.8, 25 70 C 25 58, 30 50, 50 26 Z" fill="#3E83C4"/>
-                        <!-- Inner white root/drop shape -->
                         <path d="M50 63 C 54 67, 54 69, 50 74 C 46 69, 46 67, 50 63 Z M50 74 L 50 85 M 50 85 L 47 90 M 50 85 L 53 90" stroke="white" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <!-- Plant leaves -->
                         <path d="M50 28 L 50 48" stroke="#66B54B" stroke-width="5" stroke-linecap="round"/>
                         <path d="M50 48 C 50 48, 48 38, 42 32" stroke="#66B54B" fill="none" stroke-width="5" stroke-linecap="round"/>
                         <path d="M50 48 C 50 48, 52 38, 58 32" stroke="#66B54B" fill="none" stroke-width="5" stroke-linecap="round"/>
@@ -70,9 +55,7 @@
                 </div>
             </div>
 
-            <!-- Chat Window -->
             <div id="chat-window" class="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50 dark:bg-gray-700">
-                <!-- Bot's welcome message -->
                 <div class="flex">
                     <div class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 p-3 rounded-lg max-w-xs">
                         <p>Hello Judges, I am Jal Vani, made by Team immortalfive Coders. I can assist you with information about the groundwater levels of Bhopal.</p>
@@ -80,7 +63,6 @@
                 </div>
             </div>
 
-            <!-- Typing Indicator -->
             <div id="typing-indicator" class="p-4 hidden">
                 <div class="flex items-center space-x-2">
                     <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
@@ -90,7 +72,6 @@
                 </div>
             </div>
 
-            <!-- Input Area -->
             <div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg">
                 <form id="chat-form" class="flex items-center space-x-2">
                     <input type="text" id="user-input" placeholder="e.g., Is a borewell in Karond a good idea?" autocomplete="off" class="flex-1 w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200">
@@ -102,7 +83,6 @@
                 </form>
             </div>
             
-            <!-- Footer Link -->
             <div class="text-center p-3 border-t border-gray-200 dark:border-gray-700">
                 <a href="https://ingres.iith.ac.in/gecdataonline/gis/INDIA;parentLocName=INDIA;locname=INDIA;loctype=COUNTRY;view=ADMIN;locuuid=ffce954d-24e1-494b-ba7e-0931d8ad6085;year=2024-2025;computationType=normal;component=recharge;period=annual;category=safe;mapOnClickParams=false" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                     View Live National Data (INGRES Portal)
@@ -119,7 +99,6 @@
         const userInput = document.getElementById('user-input');
         const typingIndicator = document.getElementById('typing-indicator');
 
-        // Function to add a message to the chat window
         function addMessage(sender, message) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('flex');
@@ -130,7 +109,6 @@
                 messageContent = `<div class="bg-blue-500 text-white p-3 rounded-lg max-w-xs"><p>${message}</p></div>`;
             } else {
                 messageElement.classList.add('justify-start');
-                // Use whitespace-pre-wrap to respect newlines in the bot's response
                 messageContent = `<div class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 p-3 rounded-lg max-w-xs"><p class="whitespace-pre-wrap">${message}</p></div>`;
             }
             messageElement.innerHTML = messageContent;
@@ -138,7 +116,6 @@
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
-        // --- NEW: Function to add a styled card message ---
         function addCardMessage(title, message, status = "info") {
             const messageElement = document.createElement('div');
             messageElement.classList.add('flex', 'justify-start');
@@ -151,13 +128,11 @@
                 bgClass = "bg-green-100 dark:bg-green-900/[.2]";
                 textClass = "text-green-900 dark:text-green-200";
                 borderClass = "border border-green-400 dark:border-green-600";
-            }
-            if (status === "bad") {
+            } else if (status === "bad") {
                 bgClass = "bg-red-100 dark:bg-red-900/[.2]";
                 textClass = "text-red-900 dark:text-red-200";
                 borderClass = "border border-red-400 dark:border-red-600";
-            }
-            if (status === "caution") {
+            } else if (status === "caution") {
                 bgClass = "bg-yellow-100 dark:bg-yellow-900/[.2]";
                 textClass = "text-yellow-900 dark:text-yellow-200";
                 borderClass = "border border-yellow-400 dark:border-yellow-600";
@@ -169,40 +144,29 @@
                     <p class="whitespace-pre-wrap">${message}</p>
                 </div>
             `;
-
             chatWindow.appendChild(messageElement);
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
-        // --- NEW/FIXED: Function to display a chart for a location ---
         function displayChartForLocation(location) {
-            // Correctly capitalize multi-word locations like "Arera Colony"
             const locationName = location.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-            
-            const locationData = mockIngersData.tabularData.filter(
-                item => item.location.toLowerCase() === location.toLowerCase()
-            );
+            const locationData = mockIngersData.tabularData.filter(item => item.location.toLowerCase() === location.toLowerCase());
 
-            if (locationData.length < 2) {
-                return;
-            }
+            if (locationData.length < 2) return;
 
             const labels = locationData.map(item => item.year.toString());
-            const preMonsoonData = locationData.map(item => typeof item.preMonsoon === 'number' ? item.preMonsoon : null);
-            const postMonsoonData = locationData.map(item => typeof item.postMonsoon === 'number' ? item.postMonsoon : null);
+            const preMonsoonData = locationData.map(item => item.preMonsoon);
+            const postMonsoonData = locationData.map(item => item.postMonsoon);
             
             const chartId = `chart-${Date.now()}`;
             const chartContainer = document.createElement('div');
             chartContainer.className = "bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-3";
-            // --- CHANGE: Reduced chart height from h-56 to h-40 ---
-            chartContainer.innerHTML = `<h3 class="font-bold text-center mb-2 text-gray-800 dark:text-gray-100">Groundwater Levels: ${locationName}</h3><canvas id="${chartId}" class="w-full h-40"></canvas>`;
+            chartContainer.innerHTML = `<h3 class="font-bold text-center mb-2 text-gray-800 dark:text-gray-100">Groundwater Levels: ${locationName}</h3><canvas id="${chartId}" class="w-full h-48"></canvas>`;
             chatWindow.appendChild(chartContainer);
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
             const ctx = document.getElementById(chartId).getContext('2d');
             
-            // BUG FIX: Removed the logic that destroys the previous chart.
-            // Each chart now gets its own instance and can coexist in the chat history.
             new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -212,28 +176,21 @@
                         data: preMonsoonData,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        fill: false,
-                        tension: 0.1
+                        fill: false, tension: 0.1
                     }, {
                         label: 'Post-Monsoon (mbgl)',
                         data: postMonsoonData,
                         borderColor: 'rgba(54, 162, 235, 1)',
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        fill: false,
-                        tension: 0.1
+                        fill: false, tension: 0.1
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     scales: {
                         y: {
-                            reverse: true,
-                            beginAtZero: false,
-                            title: {
-                                display: true,
-                                text: 'Meters Below Ground Level (mbgl)'
-                            }
+                            reverse: true, beginAtZero: false,
+                            title: { display: true, text: 'Meters Below Ground Level (mbgl)' }
                         }
                     },
                     plugins: {
@@ -243,9 +200,7 @@
                                 label: function(context) {
                                     let label = context.dataset.label || '';
                                     if (label) { label += ': '; }
-                                    if (context.parsed.y !== null) {
-                                        label += `${context.parsed.y} mbgl`;
-                                    }
+                                    if (context.parsed.y !== null) label += `${context.parsed.y} mbgl`;
                                     return label;
                                 }
                             }
@@ -260,162 +215,121 @@
             typingIndicator.classList.remove('hidden');
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
-            const lowerCaseMessage = userMessage.toLowerCase();
-            let botReply = mockIngersData.fallback;
-            let responded = false;
+            setTimeout(() => {
+                const lowerCaseMessage = userMessage.toLowerCase();
+                let botReply = mockIngersData.fallback; // Default fallback message
 
-            const locations = ["karond", "arera colony", "anand nagar", "lalghati", "patel nagar"];
-            const years = ["2019", "2020", "2021", "2022", "2023", "2024"];
-            const stressKeywords = ["stress", "factor"];
-            const borewellKeywords = ["borewell", "drill", "well", "suitability"];
-            const chartKeywords = ["chart", "graph", "plot", "visualize"];
-            const chatEndKeywords = ["chatend", "end chat"];
+                const locations = ["karond", "arera colony", "anand nagar", "lalghati", "patel nagar"];
+                const borewellKeywords = ["borewell", "drill", "well", "suitability"];
+                const chartKeywords = ["chart", "graph", "plot", "visualize"];
+                const stressKeywords = ["stress", "factor"];
+                const chatEndKeywords = ["end chat", "chatend"];
+                
+                const foundLocation = locations.find(loc => lowerCaseMessage.includes(loc));
+                
+                // --- FIXED: Reordered and improved logic flow ---
 
-            let foundLocation = locations.find(loc => lowerCaseMessage.includes(loc));
-            let foundYear = years.find(year => lowerCaseMessage.includes(year));
-            const foundStressQuery = stressKeywords.some(k => lowerCaseMessage.includes(k));
-            const foundBorewellQuery = borewellKeywords.some(k => lowerCaseMessage.includes(k));
-            const foundChartQuery = chartKeywords.some(k => lowerCaseMessage.includes(k));
-            const foundChatEndQuery = chatEndKeywords.some(k => lowerCaseMessage.includes(k));
-
-            if (foundChatEndQuery) {
-                setTimeout(() => {
-                    typingIndicator.classList.add('hidden');
-                    addMessage('bot', "Chat session concluded.");
-                    userInput.disabled = true;
-                    userInput.placeholder = "Chat has ended. Please refresh to start again.";
-                    document.querySelector('#chat-form button').disabled = true;
-                    const endButton = document.getElementById('end-chat-button-container');
-                    if(endButton) endButton.remove();
-                    
-                    setTimeout(() => {
-                        addMessage('bot', "Thank you judges for use me.");
-                    }, 1500);
-                }, 1000);
-                return;
-            }
-
-            if (foundBorewellQuery && foundLocation) {
-                if (mockIngersData.borewellSuitability[foundLocation]) {
-                    const reply = mockIngersData.borewellSuitability[foundLocation] + mockIngersData.borewellDisclaimer;
-                    let status = "info";
-                    if (reply.toLowerCase().includes("no.")) status = "bad";
-                    if (reply.toLowerCase().includes("caution")) status = "caution";
-
-                    setTimeout(() => {
-                        typingIndicator.classList.add('hidden');
-                        const title = `Borewell Suitability – ${foundLocation.charAt(0).toUpperCase() + foundLocation.slice(1)}`;
-                        addCardMessage(title, reply, status);
-                        showEndChatButton();
-                    }, 1200 + Math.random() * 800);
+                // Priority 1: End Chat
+                if (chatEndKeywords.some(k => lowerCaseMessage.includes(k))) {
+                    endChatSession();
                     return;
                 }
-            }
-
-            if (!responded && foundChartQuery && foundLocation) {
-                setTimeout(() => {
-                    typingIndicator.classList.add('hidden');
-                    addMessage('bot', `Certainly. Here is the 6-year groundwater level chart for ${foundLocation}.`);
-                    displayChartForLocation(foundLocation);
-                    showEndChatButton();
-                }, 1200 + Math.random() * 800);
-                return;
-            }
-
-            if (!responded && (lowerCaseMessage.includes('data for') || (foundYear && foundLocation))) {
-                let effectiveLocation = foundLocation;
-                if(!effectiveLocation && lowerCaseMessage.includes('data for')) {
-                    effectiveLocation = locations.find(loc => lowerCaseMessage.split('data for')[1].trim().startsWith(loc));
-                }
-
-                if (effectiveLocation) {
-                    const filteredData = mockIngersData.tabularData.filter(item => {
-                        const itemLocation = item.location.toLowerCase();
-                        const itemYear = item.year.toString();
-                        if (foundYear) return itemLocation.includes(effectiveLocation) && itemYear === foundYear;
-                        return itemLocation.includes(effectiveLocation);
-                    });
-
-                    if (filteredData.length > 0) {
-                        const replies = filteredData.map(item =>
-                            `In ${item.location} (${item.year}):\n• Pre-Monsoon: ${item.preMonsoon} mbgl\n• Post-Monsoon: ${item.postMonsoon}`
-                        );
-                        botReply = replies.join('\n\n');
-                        responded = true;
-
-                        setTimeout(() => {
+                
+                // Priority 2: Specific queries about a location (borewell, chart, stress)
+                if (foundLocation) {
+                    // Borewell query
+                    if (borewellKeywords.some(k => lowerCaseMessage.includes(k))) {
+                        const replyData = mockIngersData.borewellSuitability[foundLocation];
+                        if (replyData) {
+                            const reply = replyData + mockIngersData.borewellDisclaimer;
+                            let status = "caution";
+                            if (reply.toLowerCase().startsWith("no.")) status = "bad";
+                            
                             typingIndicator.classList.add('hidden');
-                            addMessage('bot', botReply);
+                            const title = `Borewell Suitability – ${foundLocation.charAt(0).toUpperCase() + foundLocation.slice(1)}`;
+                            addCardMessage(title, reply, status);
                             showEndChatButton();
-                        }, 1200 + Math.random() * 800);
+                            return;
+                        }
+                    }
+                    // Chart query
+                    if (chartKeywords.some(k => lowerCaseMessage.includes(k))) {
+                        typingIndicator.classList.add('hidden');
+                        addMessage('bot', `Certainly. Here is the 6-year groundwater level chart for ${foundLocation}.`);
+                        displayChartForLocation(foundLocation);
+                        showEndChatButton();
                         return;
                     }
-                }
-            }
-            
-            if (!responded && foundStressQuery && foundLocation) {
-                if (mockIngersData.stressData[foundLocation]) {
-                    botReply = mockIngersData.stressData[foundLocation];
-                    responded = true;
-                }
-            }
-            
-            if (!responded && mockIngersData.greetings.some(greeting => lowerCaseMessage.includes(greeting))) {
-                botReply = "Hello! How can I assist you today with topics related to Bhopal's groundwater levels?";
-                responded = true;
-            } 
-            
-            if (!responded) {
-                for (const keyword in mockIngersData.keywords) {
-                    if (lowerCaseMessage.includes(keyword)) {
-                        botReply = mockIngersData.keywords[keyword];
-                        responded = true;
-                        break;
+                    // Stress query
+                    if (stressKeywords.some(k => lowerCaseMessage.includes(k))) {
+                        botReply = mockIngersData.stressData[foundLocation] || botReply;
+                    }
+                    // Specific year data query for a location
+                    else if (/\d{4}/.test(lowerCaseMessage)) { // check if a 4-digit year is mentioned
+                        const year = lowerCaseMessage.match(/\d{4}/)[0];
+                        const filteredData = mockIngersData.tabularData.find(item => item.location.toLowerCase() === foundLocation && item.year.toString() === year);
+                        if (filteredData) {
+                             botReply = `In ${filteredData.location} (${filteredData.year}):\n• Pre-Monsoon: ${filteredData.preMonsoon} mbgl\n• Post-Monsoon: ${filteredData.postMonsoon}`;
+                        } else {
+                            botReply = `I do not have specific data for ${foundLocation} in the year ${year}. I have data from 2019 to 2024.`;
+                        }
+                    }
+                    // Just the location name is mentioned
+                    else {
+                        botReply = mockIngersData.keywords[foundLocation] || botReply;
+                    }
+                } 
+                // Priority 3: General keyword queries (not location-specific)
+                else {
+                    for (const keyword in mockIngersData.keywords) {
+                        if (lowerCaseMessage.includes(keyword)) {
+                            botReply = mockIngersData.keywords[keyword];
+                            break; 
+                        }
                     }
                 }
-            }
-            
-            setTimeout(() => {
+
                 typingIndicator.classList.add('hidden');
                 addMessage('bot', botReply);
                 showEndChatButton();
+
             }, 1200 + Math.random() * 800);
         }
 
+        // --- FIXED: More efficient - only adds the button if it's not already there ---
         function showEndChatButton() {
-            const existingButton = document.getElementById('end-chat-button-container');
-            if (existingButton) {
-                existingButton.remove();
+            if (document.getElementById('endChatBtn')) {
+                return; // Button already exists, do nothing
             }
 
             const buttonContainer = document.createElement('div');
             buttonContainer.id = 'end-chat-button-container';
             buttonContainer.classList.add('flex', 'justify-center', 'pt-2');
-
-            buttonContainer.innerHTML = `
-                <button id="endChatBtn" class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-sm animate-pulse">
-                    End Chat
-                </button>
-            `;
-
+            buttonContainer.innerHTML = `<button id="endChatBtn" class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-sm animate-pulse">End Chat</button>`;
             chatWindow.appendChild(buttonContainer);
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
             document.getElementById('endChatBtn').addEventListener('click', () => {
                 addMessage('user', 'End Chat');
-                buttonContainer.remove();
-
-                setTimeout(() => {
-                    addMessage('bot', "Chat session concluded.");
-                    userInput.disabled = true;
-                    userInput.placeholder = "Chat has ended. Please refresh to start again.";
-                    document.querySelector('#chat-form button').disabled = true;
-
-                    setTimeout(() => {
-                        addMessage('bot', "Thank you judges for use me.");
-                    }, 1500);
-                }, 500); 
+                endChatSession();
             });
+        }
+        
+        // --- NEW: A single function to handle ending the chat session cleanly ---
+        function endChatSession() {
+            typingIndicator.classList.add('hidden');
+            const endButtonContainer = document.getElementById('end-chat-button-container');
+            if(endButtonContainer) endButtonContainer.remove();
+
+            addMessage('bot', "Chat session concluded.");
+            userInput.disabled = true;
+            userInput.placeholder = "Chat has ended. Please refresh to start again.";
+            document.querySelector('#chat-form button').disabled = true;
+
+            setTimeout(() => {
+                // FIXED: Corrected grammar
+                addMessage('bot', "Thank you, judges, for using me.");
+            }, 1500);
         }
 
         const mockIngersData = {
@@ -476,7 +390,6 @@
             fallback: "I can provide info on Bhopal's groundwater. Ask about trends, solutions, government initiatives, stress levels, or borewell suitability (e.g., 'borewell in Karond'). You can also ask for a 'chart for Karond'."
         };
 
-        // Event listener for form submission
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const userMessage = userInput.value.trim();
@@ -489,7 +402,3 @@
     </script>
 </body>
 </html>
-
-
-
-
