@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jal Vani</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        #chat-window::-webkit-scrollbar {
+            width: 6px;
+        }
+        #chat-window::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        #chat-window::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        #chat-window::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+    <div class="flex flex-col h-screen max-w-2xl mx-auto">
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg flex flex-col h-[95vh] my-auto">
+            
+            <!-- Header -->
+            <div class="bg-blue-600 text-white p-4 rounded-t-lg shadow-md flex items-center">
+                <div class="w-12 h-12 mr-3 flex-shrink-0">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- High-fidelity gear with 10 teeth -->
+                        <g fill="#2E4262">
+                            <path d="M50 12 a 38 38 0 0 1 0 76 a 38 38 0 0 1 0 -76 M 50 18 a 32 32 0 0 0 0 64 a 32 32 0 0 0 0 -64" />
+                            <g>
+                                <path id="tooth" d="M47 13 L 53 13 L 56 6 L 44 6 Z" />
+                                <use href="#tooth" transform="rotate(36, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(72, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(108, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(144, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(180, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(216, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(252, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(288, 50, 50)"/>
+                                <use href="#tooth" transform="rotate(324, 50, 50)"/>
+                            </g>
+                        </g>
+                        <!-- Main water drop -->
+                        <path d="M50 26 C 70 50, 75 58, 75 70 C 75 83.8, 63.8 95, 50 95 C 36.2 95, 25 83.8, 25 70 C 25 58, 30 50, 50 26 Z" fill="#3E83C4"/>
+                        <!-- Inner white root/drop shape -->
+                        <path d="M50 63 C 54 67, 54 69, 50 74 C 46 69, 46 67, 50 63 Z M50 74 L 50 85 M 50 85 L 47 90 M 50 85 L 53 90" stroke="white" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Plant leaves -->
+                        <path d="M50 28 L 50 48" stroke="#66B54B" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M50 48 C 50 48, 48 38, 42 32" stroke="#66B54B" fill="none" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M50 48 C 50 48, 52 38, 58 32" stroke="#66B54B" fill="none" stroke-width="5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">Jal Vani</h1>
+                    <p class="text-sm text-blue-100">Your AI Groundwater Assistant</p>
+                </div>
+            </div>
+
+            <!-- Chat Window -->
+            <div id="chat-window" class="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50 dark:bg-gray-700">
+                <!-- Bot's welcome message -->
+                <div class="flex">
+                    <div class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 p-3 rounded-lg max-w-xs">
+                        <p>Hello Judges, I am Jal Vani, made by Team immortalfive Coders. I can assist you with information about the groundwater levels of Bhopal.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="p-4 hidden">
+                <div class="flex items-center space-x-2">
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                    <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Assistant is typing...</span>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-600 rounded-b-lg">
+                <form id="chat-form" class="flex items-center space-x-2">
+                    <input type="text" id="user-input" placeholder="e.g., Is a borewell in Karond a good idea?" autocomplete="off" class="flex-1 w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200">
+                    <button type="submit" class="bg-blue-600 text-white p-2.5 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Footer Link -->
+            <div class="text-center p-3 border-t border-gray-200 dark:border-gray-700">
+                <a href="https://ingres.iith.ac.in/gecdataonline/gis/INDIA;parentLocName=INDIA;locname=INDIA;loctype=COUNTRY;view=ADMIN;locuuid=ffce954d-24e1-494b-ba7e-0931d8ad6085;year=2024-2025;computationType=normal;component=recharge;period=annual;category=safe;mapOnClickParams=false" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                    View Live National Data (INGRES Portal)
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        // Function to add a message to the chat window
+        function addMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('flex');
+
+            let messageContent;
+            if (sender === 'user') {
+                messageElement.classList.add('justify-end');
+                messageContent = `<div class="bg-blue-500 text-white p-3 rounded-lg max-w-xs"><p>${message}</p></div>`;
+            } else {
+                messageElement.classList.add('justify-start');
+                // Use whitespace-pre-wrap to respect newlines in the bot's response
+                messageContent = `<div class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 p-3 rounded-lg max-w-xs"><p class="whitespace-pre-wrap">${message}</p></div>`;
+            }
+            messageElement.innerHTML = messageContent;
+            chatWindow.appendChild(messageElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // --- NEW: Function to add a styled card message ---
+        function addCardMessage(title, message, status = "info") {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('flex', 'justify-start');
+
+            let bgClass = "bg-gray-100 dark:bg-gray-600";
+            let textClass = "text-gray-800 dark:text-gray-100";
+            let borderClass = "border border-gray-300 dark:border-gray-500";
+
+            if (status === "good") {
+                bgClass = "bg-green-100 dark:bg-green-900/[.2]";
+                textClass = "text-green-900 dark:text-green-200";
+                borderClass = "border border-green-400 dark:border-green-600";
+            }
+            if (status === "bad") {
+                bgClass = "bg-red-100 dark:bg-red-900/[.2]";
+                textClass = "text-red-900 dark:text-red-200";
+                borderClass = "border border-red-400 dark:border-red-600";
+            }
+            if (status === "caution") {
+                bgClass = "bg-yellow-100 dark:bg-yellow-900/[.2]";
+                textClass = "text-yellow-900 dark:text-yellow-200";
+                borderClass = "border border-yellow-400 dark:border-yellow-600";
+            }
+
+            messageElement.innerHTML = `
+                <div class="${bgClass} ${textClass} ${borderClass} p-4 rounded-xl shadow-md max-w-md w-full">
+                    <h2 class="font-bold text-lg mb-2">${title}</h2>
+                    <p class="whitespace-pre-wrap">${message}</p>
+                </div>
+            `;
+
+            chatWindow.appendChild(messageElement);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // --- NEW/FIXED: Function to display a chart for a location ---
+        function displayChartForLocation(location) {
+            // Correctly capitalize multi-word locations like "Arera Colony"
+            const locationName = location.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            
+            const locationData = mockIngersData.tabularData.filter(
+                item => item.location.toLowerCase() === location.toLowerCase()
+            );
+
+            if (locationData.length < 2) {
+                return;
+            }
+
+            const labels = locationData.map(item => item.year.toString());
+            const preMonsoonData = locationData.map(item => typeof item.preMonsoon === 'number' ? item.preMonsoon : null);
+            const postMonsoonData = locationData.map(item => typeof item.postMonsoon === 'number' ? item.postMonsoon : null);
+            
+            const chartId = `chart-${Date.now()}`;
+            const chartContainer = document.createElement('div');
+            chartContainer.className = "bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mt-3";
+            // --- CHANGE: Reduced chart height from h-56 to h-40 ---
+            chartContainer.innerHTML = `<h3 class="font-bold text-center mb-2 text-gray-800 dark:text-gray-100">Groundwater Levels: ${locationName}</h3><canvas id="${chartId}" class="w-full h-40"></canvas>`;
+            chatWindow.appendChild(chartContainer);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            const ctx = document.getElementById(chartId).getContext('2d');
+            
+            // BUG FIX: Removed the logic that destroys the previous chart.
+            // Each chart now gets its own instance and can coexist in the chat history.
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Pre-Monsoon (mbgl)',
+                        data: preMonsoonData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: false,
+                        tension: 0.1
+                    }, {
+                        label: 'Post-Monsoon (mbgl)',
+                        data: postMonsoonData,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            reverse: true,
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Meters Below Ground Level (mbgl)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) {
+                                        label += `${context.parsed.y} mbgl`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // --- Main function to generate bot's response ---
+        function generateBotResponse(userMessage) {
+            typingIndicator.classList.remove('hidden');
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            const lowerCaseMessage = userMessage.toLowerCase();
+            let botReply = mockIngersData.fallback;
+            let responded = false;
+
+            const locations = ["karond", "arera colony", "anand nagar", "lalghati", "patel nagar"];
+            const years = ["2019", "2020", "2021", "2022", "2023", "2024"];
+            const stressKeywords = ["stress", "factor"];
+            const borewellKeywords = ["borewell", "drill", "well", "suitability"];
+            const chartKeywords = ["chart", "graph", "plot", "visualize"];
+            const chatEndKeywords = ["chatend", "end chat"];
+
+            let foundLocation = locations.find(loc => lowerCaseMessage.includes(loc));
+            let foundYear = years.find(year => lowerCaseMessage.includes(year));
+            const foundStressQuery = stressKeywords.some(k => lowerCaseMessage.includes(k));
+            const foundBorewellQuery = borewellKeywords.some(k => lowerCaseMessage.includes(k));
+            const foundChartQuery = chartKeywords.some(k => lowerCaseMessage.includes(k));
+            const foundChatEndQuery = chatEndKeywords.some(k => lowerCaseMessage.includes(k));
+
+            if (foundChatEndQuery) {
+                setTimeout(() => {
+                    typingIndicator.classList.add('hidden');
+                    addMessage('bot', "Chat session concluded.");
+                    userInput.disabled = true;
+                    userInput.placeholder = "Chat has ended. Please refresh to start again.";
+                    document.querySelector('#chat-form button').disabled = true;
+                    const endButton = document.getElementById('end-chat-button-container');
+                    if(endButton) endButton.remove();
+                    
+                    setTimeout(() => {
+                        addMessage('bot', "Thank you judges for use me.");
+                    }, 1500);
+                }, 1000);
+                return;
+            }
+
+            if (foundBorewellQuery && foundLocation) {
+                if (mockIngersData.borewellSuitability[foundLocation]) {
+                    const reply = mockIngersData.borewellSuitability[foundLocation] + mockIngersData.borewellDisclaimer;
+                    let status = "info";
+                    if (reply.toLowerCase().includes("no.")) status = "bad";
+                    if (reply.toLowerCase().includes("caution")) status = "caution";
+
+                    setTimeout(() => {
+                        typingIndicator.classList.add('hidden');
+                        const title = `Borewell Suitability – ${foundLocation.charAt(0).toUpperCase() + foundLocation.slice(1)}`;
+                        addCardMessage(title, reply, status);
+                        showEndChatButton();
+                    }, 1200 + Math.random() * 800);
+                    return;
+                }
+            }
+
+            if (!responded && foundChartQuery && foundLocation) {
+                setTimeout(() => {
+                    typingIndicator.classList.add('hidden');
+                    addMessage('bot', `Certainly. Here is the 6-year groundwater level chart for ${foundLocation}.`);
+                    displayChartForLocation(foundLocation);
+                    showEndChatButton();
+                }, 1200 + Math.random() * 800);
+                return;
+            }
+
+            if (!responded && (lowerCaseMessage.includes('data for') || (foundYear && foundLocation))) {
+                let effectiveLocation = foundLocation;
+                if(!effectiveLocation && lowerCaseMessage.includes('data for')) {
+                    effectiveLocation = locations.find(loc => lowerCaseMessage.split('data for')[1].trim().startsWith(loc));
+                }
+
+                if (effectiveLocation) {
+                    const filteredData = mockIngersData.tabularData.filter(item => {
+                        const itemLocation = item.location.toLowerCase();
+                        const itemYear = item.year.toString();
+                        if (foundYear) return itemLocation.includes(effectiveLocation) && itemYear === foundYear;
+                        return itemLocation.includes(effectiveLocation);
+                    });
+
+                    if (filteredData.length > 0) {
+                        const replies = filteredData.map(item =>
+                            `In ${item.location} (${item.year}):\n• Pre-Monsoon: ${item.preMonsoon} mbgl\n• Post-Monsoon: ${item.postMonsoon}`
+                        );
+                        botReply = replies.join('\n\n');
+                        responded = true;
+
+                        setTimeout(() => {
+                            typingIndicator.classList.add('hidden');
+                            addMessage('bot', botReply);
+                            showEndChatButton();
+                        }, 1200 + Math.random() * 800);
+                        return;
+                    }
+                }
+            }
+            
+            if (!responded && foundStressQuery && foundLocation) {
+                if (mockIngersData.stressData[foundLocation]) {
+                    botReply = mockIngersData.stressData[foundLocation];
+                    responded = true;
+                }
+            }
+            
+            if (!responded && mockIngersData.greetings.some(greeting => lowerCaseMessage.includes(greeting))) {
+                botReply = "Hello! How can I assist you today with topics related to Bhopal's groundwater levels?";
+                responded = true;
+            } 
+            
+            if (!responded) {
+                for (const keyword in mockIngersData.keywords) {
+                    if (lowerCaseMessage.includes(keyword)) {
+                        botReply = mockIngersData.keywords[keyword];
+                        responded = true;
+                        break;
+                    }
+                }
+            }
+            
+            setTimeout(() => {
+                typingIndicator.classList.add('hidden');
+                addMessage('bot', botReply);
+                showEndChatButton();
+            }, 1200 + Math.random() * 800);
+        }
+
+        function showEndChatButton() {
+            const existingButton = document.getElementById('end-chat-button-container');
+            if (existingButton) {
+                existingButton.remove();
+            }
+
+            const buttonContainer = document.createElement('div');
+            buttonContainer.id = 'end-chat-button-container';
+            buttonContainer.classList.add('flex', 'justify-center', 'pt-2');
+
+            buttonContainer.innerHTML = `
+                <button id="endChatBtn" class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 text-sm animate-pulse">
+                    End Chat
+                </button>
+            `;
+
+            chatWindow.appendChild(buttonContainer);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            document.getElementById('endChatBtn').addEventListener('click', () => {
+                addMessage('user', 'End Chat');
+                buttonContainer.remove();
+
+                setTimeout(() => {
+                    addMessage('bot', "Chat session concluded.");
+                    userInput.disabled = true;
+                    userInput.placeholder = "Chat has ended. Please refresh to start again.";
+                    document.querySelector('#chat-form button').disabled = true;
+
+                    setTimeout(() => {
+                        addMessage('bot', "Thank you judges for use me.");
+                    }, 1500);
+                }, 500); 
+            });
+        }
+
+        const mockIngersData = {
+            greetings: ["hello", "hi", "hey", "good morning"],
+            keywords: {
+                "cgwb": "The Central Ground Water Board (CGWB) is the national apex agency responsible for providing scientific inputs for management, exploration, monitoring, assessment, augmentation and regulation of ground water resources of the country.",
+                "government": "Key government initiatives include the 'Jal Ganga Sanvardhan Abhiyan' for well recharge and stricter regulations on new borewells. The goal is to promote sustainable water management through rainwater harvesting and community participation.",
+                "initiatives": "Key government initiatives include the 'Jal Ganga Sanvardhan Abhiyan' for well recharge and stricter regulations on new borewells. The goal is to promote sustainable water management through rainwater harvesting and community participation.",
+                "solution": "Solutions include mandatory rainwater harvesting, scaling up groundwater recharge projects (like check dams), stricter regulation of borewells, and public awareness campaigns to promote water conservation.",
+                "trend": "A five-year analysis (2020-2024) shows a persistent decline in Bhopal's groundwater. Pre-monsoon levels consistently show the most depletion, and post-monsoon recovery has often been insufficient to offset the decline, leading to its 'semi-critical' status.",
+                "analysis": "A five-year analysis (2020-2024) shows a persistent decline in Bhopal's groundwater. Pre-monsoon levels consistently show the most depletion, and post-monsoon recovery has often been insufficient to offset the decline, leading to its 'semi-critical' status.",
+                "karond": "Karond is a high-stress area. Ask 'stress in Karond' for factors, 'borewell in Karond' for suitability, or 'chart for Karond' to see a 6-year trend.",
+                "lalghati": "Lalghati is a high-stress commercial hub. Ask 'stress in Lalghati' for details or 'borewell in Lalghati' for suitability.",
+                "arera colony": "Arera Colony has Moderate to High stress. Ask 'stress in Arera Colony' for factors, 'borewell in Arera Colony' for suitability, or 'chart for Arera Colony' to see a 6-year trend.",
+                "anand nagar": "Anand Nagar has high stress from residential growth. Ask 'stress in Anand Nagar' for factors, 'borewell in Anand Nagar' for suitability, or 'chart for Anand Nagar' to see a 6-year trend.",
+                "patel nagar": "Patel Nagar is a high-stress residential area. Ask 'stress in Patel Nagar' for details or 'borewell in Patel Nagar' for suitability.",
+                "ingres": "The IN-GRES (INDIA-Groundwater Resource Estimation System) portal is a web application developed by CGWB and IIT-Hyderabad for official assessment of the country's groundwater resources. The link at the bottom of the chat connects you to it.",
+                "national data": "This chatbot contains specific data for Bhopal. For live, nationwide groundwater data and maps, please use the 'View Live National Data (INGRES Portal)' link at the bottom of the window.",
+                "projection": "The 2026 projection is concerning. If high extraction and erratic monsoon patterns continue, a further decline is highly probable. This could lead to more borewell failures and a greater strain on the municipal water supply.",
+                "recharge": "Groundwater can be recharged through methods like rainwater harvesting and constructing check dams. The government's 'Jal Ganga Sanvardhan Abhiyan' is a major initiative focused on this.",
+                "aquifer": "An aquifer is an underground layer of water-bearing permeable rock. In Bhopal, the aquifers in residential hotspots like Anand Nagar are under significant strain due to over-extraction.",
+            },
+            tabularData: [
+                { location: "Karond", year: 2019, preMonsoon: 15.2, postMonsoon: 12.8 },
+                { location: "Karond", year: 2020, preMonsoon: 14.9, postMonsoon: 11.7 },
+                { location: "Karond", year: 2021, preMonsoon: 15.5, postMonsoon: 13.1 },
+                { location: "Karond", year: 2022, preMonsoon: 16.0, postMonsoon: 13.5 },
+                { location: "Karond", year: 2023, preMonsoon: 15.8, postMonsoon: 12.9 },
+                { location: "Karond", year: 2024, preMonsoon: 16.2, postMonsoon: 13.2 },
+                { location: "Arera Colony", year: 2019, preMonsoon: 8.8, postMonsoon: 4.5 },
+                { location: "Arera Colony", year: 2020, preMonsoon: 8.5, postMonsoon: 4.2 },
+                { location: "Arera Colony", year: 2021, preMonsoon: 9.0, postMonsoon: 4.8 },
+                { location: "Arera Colony", year: 2022, preMonsoon: 9.5, postMonsoon: 5.0 },
+                { location: "Arera Colony", year: 2023, preMonsoon: 9.2, postMonsoon: 5.1 },
+                { location: "Arera Colony", year: 2024, preMonsoon: 9.8, postMonsoon: 5.4 },
+                { location: "Anand Nagar", year: 2019, preMonsoon: 13.5, postMonsoon: 10.9 },
+                { location: "Anand Nagar", year: 2020, preMonsoon: 13.8, postMonsoon: 11.2 },
+                { location: "Anand Nagar", year: 2021, preMonsoon: 14.1, postMonsoon: 11.5 },
+                { location: "Anand Nagar", year: 2022, preMonsoon: 14.4, postMonsoon: 11.8 },
+                { location: "Anand Nagar", year: 2023, preMonsoon: 14.7, postMonsoon: 12.1 },
+                { location: "Anand Nagar", year: 2024, preMonsoon: 15.0, postMonsoon: 12.4 }
+            ],
+            stressData: {
+                "karond": "In Karond:\n• Estimated Stress: High\n• Key Factors: Dense population, high commercial activity, numerous borewells.",
+                "lalghati": "In Lalghati:\n• Estimated Stress: High\n• Key Factors: Major commercial hub, high water demand from businesses.",
+                "anand nagar": "In Anand Nagar:\n• Estimated Stress: High\n• Key Factors: Rapid and dense residential development, increasing number of multi-story buildings.",
+                "patel nagar": "In Patel Nagar:\n• Estimated Stress: High\n• Key Factors: A well-established, dense residential area that is heavily reliant on groundwater.",
+                "arera colony": "In Arera Colony:\n• Estimated Stress: Moderate to High\n• Key Factors: Better planned with more green spaces, but high per-capita water consumption is a major factor."
+            },
+            borewellSuitability: {
+                "karond": "No.\nReasoning: Groundwater stress is High to Severe due to extreme population density and a high concentration of existing borewells. There is a high risk of borewell failure or rapid depletion.",
+                "lalghati": "No.\nReasoning: Groundwater stress is High to Severe. As a major commercial hub, there is substantial water demand. There is a very high risk of insufficient water yield and a short lifespan for the borewell.",
+                "anand nagar": "No (with caution).\nReasoning: Stress is High due to rapid and dense residential development. There is a high risk of seasonal water shortages and a declining water table.",
+                "patel nagar": "No (with caution).\nReasoning: Stress is High. This is a dense residential area heavily reliant on groundwater. Borewell success is not guaranteed and water levels are likely to be deep.",
+                "arera colony": "Caution is advised.\nReasoning: Stress is Moderate to High. Success is more likely than in other areas, but longevity and yield are still concerns. A professional survey is crucial."
+            },
+            borewellDisclaimer: "\n\nGeneral Disclaimer: This advice is based on city-wide data and area-level trends. Local geological conditions can vary significantly. For an accurate assessment, always consult a qualified hydrogeologist to conduct a site-specific survey before drilling.",
+            fallback: "I can provide info on Bhopal's groundwater. Ask about trends, solutions, government initiatives, stress levels, or borewell suitability (e.g., 'borewell in Karond'). You can also ask for a 'chart for Karond'."
+        };
+
+        // Event listener for form submission
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userMessage = userInput.value.trim();
+            if (userMessage) {
+                addMessage('user', userMessage);
+                userInput.value = '';
+                generateBotResponse(userMessage);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
